@@ -34,6 +34,7 @@ interface T$$ {
 	on_mount: any[];
 	on_destroy: any[];
 	skip_bound: boolean;
+	stylesTarget?: HTMLElement|ShadowRoot;
 }
 
 export function bind(component, name, callback) {

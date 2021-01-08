@@ -117,7 +117,8 @@ export class SvelteComponentDev extends SvelteComponent {
 	$$prop_def: Props;
 
 	constructor(options: {
-		target: Element;
+		target: Element|ShadowRoot;
+		stylesTarget: Element|ShadowRoot;
 		anchor?: Element;
 		props?: Props;
 		hydrate?: boolean;
@@ -160,9 +161,9 @@ export interface SvelteComponentTyped<
 /**
  * Base class to create strongly typed Svelte components.
  * This only exists for typing purposes and should be used in `.d.ts` files.
- * 
+ *
  * ### Example:
- * 
+ *
  * You have component library on npm called `component-library`, from which
  * you export a component called `MyComponent`. For Svelte+TypeScript users,
  * you want to provide typings. Therefore you create a `index.d.ts`:
@@ -179,7 +180,7 @@ export interface SvelteComponentTyped<
  * </script>
  * <MyComponent foo={'bar'} />
  * ```
- * 
+ *
  * #### Why not make this part of `SvelteComponent(Dev)`?
  * Because
  * ```ts
@@ -216,7 +217,8 @@ export class SvelteComponentTyped<
 	$$slot_def: Slots;
 
 	constructor(options: {
-		target: Element;
+		target: Element|ShadowRoot;
+		stylesTarget: Element|ShadowRoot;
 		anchor?: Element;
 		props?: Props;
 		hydrate?: boolean;

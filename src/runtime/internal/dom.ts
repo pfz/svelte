@@ -1,5 +1,27 @@
 import { has_prop } from './utils';
 
+let appendStylesTo = document.head;
+
+export function append_styles(
+	{ stylesTarget },
+	styleSheetId: string,
+	styles: string,
+	styleId: string = `svelte-${styleSheetId}-style`
+) {
+	if (stylesTarget) appendStylesTo = stylesTarget;
+
+	if (!appendStylesTo.querySelector('#' + styleId)) {
+		const style = element('style');
+		style.id = styleId;
+		style.textContent = styles;
+		append(appendStylesTo, style);
+	}
+}
+
+export function append_empty_stylesheet() {
+	return appendStylesTo.appendChild(element('style') as HTMLStyleElement);
+}
+
 export function append(target: Node, node: Node) {
 	target.appendChild(node);
 }
