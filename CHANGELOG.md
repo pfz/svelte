@@ -1,5 +1,11 @@
 # Svelte changelog
 
+## 3.32.0
+
+* Allow multiple instances of the same action on an element ([#5516](https://github.com/sveltejs/svelte/issues/5516))
+* Support `foreign` namespace, which disables certain HTML5-specific behaviour and checks ([#5652](https://github.com/sveltejs/svelte/pull/5652))
+* Support inline comment sourcemaps in code from preprocessors ([#5854](https://github.com/sveltejs/svelte/pull/5854))
+
 ## 3.31.2
 
 * Rework SSR store handling to subscribe and unsubscribe as in DOM mode ([#3375](https://github.com/sveltejs/svelte/issues/3375), [#3582](https://github.com/sveltejs/svelte/issues/3582), [#3636](https://github.com/sveltejs/svelte/issues/3636))
