@@ -1,5 +1,30 @@
 # Svelte changelog
 
+## Unreleased
+
+* Custom Elements - Call `onMount` when connected & clean-up when disconnected ([#4522](https://github.com/sveltejs/svelte/pull/4522))
+
+## 3.32.3
+
+* Fix removal of lone `:host` selectors ([#5982](https://github.com/sveltejs/svelte/issues/5982))
+
+## 3.32.2
+
+* Fix unnecessary additional invalidation with `<Component bind:prop={obj.foo}/>` ([#3075](https://github.com/sveltejs/svelte/issues/3075), [#4447](https://github.com/sveltejs/svelte/issues/4447), [#5555](https://github.com/sveltejs/svelte/issues/5555))
+* Fix scoping of selectors with `:global()` and `~` sibling combinators ([#5499](https://github.com/sveltejs/svelte/issues/5499))
+* Fix removal of `:host` selectors as unused when compiling to a custom element ([#5946](https://github.com/sveltejs/svelte/issues/5946))
+
+## 3.32.1
+
+* Warn when using `module` variables reactively, and close weird reactivity loophole ([#5847](https://github.com/sveltejs/svelte/pull/5847))
+* Throw a parser error for `class:` directives with an empty class name ([#5858](https://github.com/sveltejs/svelte/issues/5858))
+* Fix extraneous store subscription in SSR mode ([#5883](https://github.com/sveltejs/svelte/issues/5883))
+* Don't emit update code for `class:` directives whose expression is not dynamic ([#5919](https://github.com/sveltejs/svelte/issues/5919))
+* Fix type inference for derived stores ([#5935](https://github.com/sveltejs/svelte/pull/5935))
+* Make parameters of built-in animations and transitions optional ([#5936](https://github.com/sveltejs/svelte/pull/5936))
+* Make `SvelteComponentDev` typings more forgiving ([#5937](https://github.com/sveltejs/svelte/pull/5937))
+* Fix `foreign` elements incorrectly disallowing `bind:this` ([#5942](https://github.com/sveltejs/svelte/pull/5942))
+
 ## 3.32.0
 
 * Allow multiple instances of the same action on an element ([#5516](https://github.com/sveltejs/svelte/issues/5516))

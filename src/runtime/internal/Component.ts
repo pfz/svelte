@@ -34,6 +34,7 @@ interface T$$ {
 	on_mount: any[];
 	on_destroy: any[];
 	skip_bound: boolean;
+	on_disconnect: any[];
 	stylesTarget?: HTMLElement|ShadowRoot;
 }
 
@@ -53,23 +54,26 @@ export function claim_component(block, parent_nodes) {
 	block && block.l(parent_nodes);
 }
 
-export function mount_component(component, target, anchor) {
+export function mount_component(component, target, anchor, customElement) {
 	const { fragment, on_mount, on_destroy, after_update } = component.$$;
 
 	fragment && fragment.m(target, anchor);
 
-	// onMount happens before the initial afterUpdate
-	add_render_callback(() => {
-		const new_on_destroy = on_mount.map(run).filter(is_function);
-		if (on_destroy) {
-			on_destroy.push(...new_on_destroy);
-		} else {
-			// Edge case - component was destroyed immediately,
-			// most likely as a result of a binding initialising
-			run_all(new_on_destroy);
-		}
-		component.$$.on_mount = [];
-	});
+	if (!customElement) {
+		// onMount happens before the initial afterUpdate
+		add_render_callback(() => {
+
+			const new_on_destroy = on_mount.map(run).filter(is_function);
+			if (on_destroy) {
+				on_destroy.push(...new_on_destroy);
+			} else {
+				// Edge case - component was destroyed immediately,
+				// most likely as a result of a binding initialising
+				run_all(new_on_destroy);
+			}
+			component.$$.on_mount = [];
+		});
+	}
 
 	after_update.forEach(add_render_callback);
 }
@@ -101,8 +105,6 @@ export function init(component, options, instance, create_fragment, not_equal, p
 	const parent_component = current_component;
 	set_current_component(component);
 
-	const prop_values = options.props || {};
-
 	const $$: T$$ = component.$$ = {
 		fragment: null,
 		ctx: null,
@@ -116,6 +118,7 @@ export function init(component, options, instance, create_fragment, not_equal, p
 		// lifecycle
 		on_mount: [],
 		on_destroy: [],
+		on_disconnect: [],
 		before_update: [],
 		after_update: [],
 		context: new Map(parent_component ? parent_component.$$.context : []),
@@ -129,7 +132,7 @@ export function init(component, options, instance, create_fragment, not_equal, p
 	let ready = false;
 
 	$$.ctx = instance
-		? instance(component, prop_values, (i, ret, ...rest) => {
+		? instance(component, options.props || {}, (i, ret, ...rest) => {
 			const value = rest.length ? rest[0] : ret;
 			if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
 				if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
@@ -158,7 +161,7 @@ export function init(component, options, instance, create_fragment, not_equal, p
 		}
 
 		if (options.intro) transition_in(component.$$.fragment);
-		mount_component(component, options.target, options.anchor);
+		mount_component(component, options.target, options.anchor, options.customElement);
 		flush();
 	}
 
@@ -176,6 +179,9 @@ if (typeof HTMLElement === 'function') {
 		}
 
 		connectedCallback() {
+			const { on_mount } = this.$$;
+			this.$$.on_disconnect = on_mount.map(run).filter(is_function);
+
 			// @ts-ignore todo: improve typings
 			for (const key in this.$$.slotted) {
 				// @ts-ignore todo: improve typings
@@ -185,6 +191,10 @@ if (typeof HTMLElement === 'function') {
 
 		attributeChangedCallback(attr, _oldValue, newValue) {
 			this[attr] = newValue;
+		}
+
+		disconnectedCallback() {
+			run_all(this.$$.on_disconnect);
 		}
 
 		$destroy() {
