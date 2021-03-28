@@ -1,14 +1,14 @@
 import { has_prop } from './utils';
 
-let appendStylesTo = document.head;
+let appendStylesTo: Element;
 
 export function append_styles(
-	{ stylesTarget },
+	{ target },
 	styleSheetId: string,
 	styles: string,
 	styleId: string = `svelte-${styleSheetId}-style`
 ) {
-	if (stylesTarget) appendStylesTo = stylesTarget;
+	if (target) appendStylesTo = get_root_for_node(target);
 
 	if (!appendStylesTo.querySelector('#' + styleId)) {
 		const style = element('style');
@@ -16,6 +16,11 @@ export function append_styles(
 		style.textContent = styles;
 		append(appendStylesTo, style);
 	}
+}
+
+function get_root_for_node(node: Node) {
+	const root = (node.getRootNode ? node.getRootNode() : node.ownerDocument); // check for getRootNode because IE is still supported
+	return ((root as ShadowRoot).host ? root : (root as Document).head) as Element;
 }
 
 export function append_empty_stylesheet() {
