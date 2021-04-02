@@ -35,6 +35,7 @@ interface T$$ {
 	on_destroy: any[];
 	skip_bound: boolean;
 	on_disconnect: any[];
+	root:Element|ShadowRoot
 }
 
 export function bind(component, name, callback) {
@@ -100,7 +101,7 @@ function make_dirty(component, i) {
 	component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
 }
 
-export function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+export function init(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
 	const parent_component = current_component;
 	set_current_component(component);
 
@@ -125,8 +126,11 @@ export function init(component, options, instance, create_fragment, not_equal, p
 		// everything else
 		callbacks: blank_object(),
 		dirty,
-		skip_bound: false
+		skip_bound: false,
+		root: options.target || parent_component.$$.root
 	};
+
+	append_styles && append_styles($$.root);
 
 	let ready = false;
 
@@ -140,8 +144,6 @@ export function init(component, options, instance, create_fragment, not_equal, p
 			return ret;
 		})
 		: [];
-
-	$$.ctx.$$root = options.target || options.$$root;
 
 	$$.update();
 	ready = true;

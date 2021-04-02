@@ -1,12 +1,12 @@
 import { has_prop } from './utils';
 
 export function append_styles(
-	{ target, $$root },
+	target: Node,
 	styleSheetId: string,
 	styles: string,
 	styleId: string = `svelte-${styleSheetId}-style`
 ) {
-	const appendStylesTo = get_root_for_node(target || $$root);
+	const appendStylesTo = get_root_for_node(target);
 
 	if (!appendStylesTo?.querySelector('#' + styleId)) {
 		const style = element('style');
