@@ -482,7 +482,7 @@ export default function dom(
 
 					${css.code && b`this.shadowRoot.innerHTML = \`<style>${css.code.replace(/\\/g, '\\\\')}${options.dev ? `\n/*# sourceMappingURL=${css.map.toUrl()} */` : ''}</style>\`;`}
 
-					@init(this, { target: this.shadowRoot, props: ${init_props}, customElement: true }, ${definition}, ${has_create_fragment ? 'create_fragment' : 'null'}, ${not_equal}, ${prop_indexes}, ${dirty});
+					@init(this, { target: this.shadowRoot, props: ${init_props}, customElement: true }, ${definition}, ${has_create_fragment ? 'create_fragment' : 'null'}, ${not_equal}, ${prop_indexes}, null, ${dirty});
 
 					${dev_props_check}
 
@@ -533,7 +533,7 @@ export default function dom(
 			class ${name} extends ${superclass} {
 				constructor(options) {
 					super(${options.dev && 'options'});
-					@init(this, options, ${definition}, ${has_create_fragment ? 'create_fragment': 'null'}, ${not_equal}, ${prop_indexes}, ${should_add_css ? add_css : null}, ${dirty});
+					@init(this, options, ${definition}, ${has_create_fragment ? 'create_fragment': 'null'}, ${not_equal}, ${prop_indexes}, ${should_add_css ? add_css : 'null'}, ${dirty});
 					${options.dev && b`@dispatch_dev("SvelteRegisterComponent", { component: this, tagName: "${name.name}", options, id: create_fragment.name });`}
 
 					${dev_props_check}
