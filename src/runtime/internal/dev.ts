@@ -104,6 +104,16 @@ export interface SvelteComponentDev {
 	$destroy(): void;
 	[accessor: string]: any;
 }
+interface IComponentOptions {
+	target: Element|ShadowRoot;
+	anchor?: Element;
+	props?: Props;
+	context?: Map<any, any>;
+	hydrate?: boolean;
+	intro?: boolean;
+	$$inline?: boolean;
+}
+
 /**
  * Base class for Svelte components with some minor dev-enhancements. Used when dev=true.
  */
@@ -130,14 +140,7 @@ export class SvelteComponentDev extends SvelteComponent {
 	 */
 	$$slot_def: any;
 
-	constructor(options: {
-		target: Element|ShadowRoot;
-		anchor?: Element;
-		props?: Props;
-		hydrate?: boolean;
-		intro?: boolean;
-		$$inline?: boolean;
-    }) {
+	constructor(options: IComponentOptions) {
 		if (!options || (!options.target && !options.$$inline)) {
 			throw new Error("'target' is a required option");
 		}
@@ -229,14 +232,7 @@ export class SvelteComponentTyped<
 	 */
 	$$slot_def: Slots;
 
-	constructor(options: {
-		target: Element|ShadowRoot;
-		anchor?: Element;
-		props?: Props;
-		hydrate?: boolean;
-		intro?: boolean;
-		$$inline?: boolean;
-    }) {
+	constructor(options: IComponentOptions) {
 		super(options);
 	}
 }

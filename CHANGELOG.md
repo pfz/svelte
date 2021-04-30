@@ -2,10 +2,23 @@
 
 ## Unreleased
 
+* Avoid recreating DOM elements during hydration ([#6204](https://github.com/sveltejs/svelte/pull/6204))
+* Add missing function overload for `derived` to allow explicitly setting an initial value for non-async derived stores ([#6172](https://github.com/sveltejs/svelte/pull/6172))
+* Pass full markup source to script/style preprocessors ([#6169](https://github.com/sveltejs/svelte/pull/6169))
+* Add "context" typing to SvelteComponent constructor options ([#6236](https://github.com/sveltejs/svelte/pull/6236))
+
+## 3.37.0
+
+* Allow root-level context to be passed to the component constructor ([#6032](https://github.com/sveltejs/svelte/pull/6032))
+
+## 3.36.0
+
 * Add `this: void` typing to store functions ([#6094](https://github.com/sveltejs/svelte/pull/6094))
 * Export `Spring`, `Tweened` and `EasingFunction` interfaces ([#6070](https://github.com/sveltejs/svelte/issues/6070), [#6056](https://github.com/sveltejs/svelte/pull/6056))
 * Export interfaces for transition parameters ([#5207](https://github.com/sveltejs/svelte/issues/5207))
 * Export store's useful TypeScript definitions ([#5864](https://github.com/sveltejs/svelte/issues/5864))
+* Fix previous breaking change to `svelte/preprocess` types location ([#6100](https://github.com/sveltejs/svelte/pull/6100))
+* Fix missing slotted elements in AST ([#6066](https://github.com/sveltejs/svelte/issues/6066))
 
 ## 3.35.0
 
